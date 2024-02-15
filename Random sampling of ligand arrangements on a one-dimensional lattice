@@ -4,6 +4,8 @@ then asks for number of ligands, ligand lengths, co-operativity parameters in th
 dialogue boxes. It generates probability of binding of each ligands by averaging the 
 'nrun' simulations and compares it with exact binding probability as the output.
 
+The files within SRC are supporting files to generate the GUI.
+
 
 In non-GUI version ligandnongui.m generates probability of binding of 3 ligands (size 4 lattice site each)
 as discussed in the article.
