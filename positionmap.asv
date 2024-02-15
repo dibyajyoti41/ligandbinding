@@ -1,0 +1,56 @@
+%%%This code generates positional maps of ligands (for first 300 base-pairs) 
+% simulated from 10 runs and stcked vertically. It takes input as the 'res'
+% variable which is generated from the ligandnongui.m/ligandgui.m
+%colorcodes are following 
+%%000= free sites (black)
+%%001= ligand 1(blue)
+%%010= ligand 2(red)
+%%00
+
+
+
+stateSequence = res(1:10,:);
+colorCode = [0 0 0; 0 0 1; 0 0 1; 0 0 1; 0 0 1; 1 0 0; 1 0 0; 1 0 0; 1 0 0; 0 1 0; 0 1 0; 0 1 0; 0 1 0]; % Black, Blue, Red, Green
+
+gapWidth=1;
+
+numRows=10;
+
+numCols=300;
+barWidth = 20; % Width of each bar
+spacing = 0; % Spacing between bars
+barcodeHeight = 100; % Height of the barcode
+imageWidth = numCols * (barWidth + spacing);
+imageHeight = numRows * barcodeHeight+12;
+
+
+
+% Initialize barcodeImage
+barcodeImage = ones(imageHeight, imageWidth, 3);
+
+% Generate barcodes
+for row = 1:numRows
+    barcodeRow = (row - 1) * barcodeHeight + 1;
+    
+    for col = 1:numCols
+      
+        currentState = stateSequence(row, col);
+        currentColor = colorCode(currentState, :);
+        barcodeCol = (col - 1) * (barWidth + spacing) + 1;
+        
+        
+        for i = 1:barcodeHeight
+            for j = 1:barWidth
+                barcodeImage(barcodeRow + i - 1, barcodeCol + j - 1, :) = currentColor;
+            end
+        end
+    end
+   
+     barcodeImage(barcodeRow:barcodeRow+ 1, :, :) = 1;
+     barcodeImage(row*100:row*100+1,:,:)=1;
+
+end
+
+
+imshow(barcodeImage);
+title('Positional map of ligands');
