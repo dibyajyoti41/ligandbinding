@@ -5,7 +5,7 @@
 % TODO: check which ones are necessary and comment everything
 %
 promptfortheory = 1;         % ask user for theories
-promptforsavetheory = 1;
+promptforsavetheory = 0;
 savetxts = 1;
 resultsDir = 'theoryData';
 fastas = 'fastas_2020-03-13_13_46_06_.txt';
