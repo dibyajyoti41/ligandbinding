@@ -12,7 +12,7 @@
      % transfer matrix calculation which appended in this same code at
      % last.
 
-
+        clear
       
        numLigands = 3; 
         bindingConstants = [];
@@ -569,100 +569,64 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-
-
-
-% figure,plot(outputArray4)
-%%
-% 
-%  $PREFORMATTED
-%  TEXT$ 
-% 
 x=1:300;
+
 figure('units','normalized','outerposition',[0 0 1 1])
 %figure
 set(0,'DefaultLineLineWidth',2)
-% 
-% First subplot
 for i=1:s+1
-
-subplot(s+1,1,i)
-
 m1d = mean(oyo(i,:,:),2);
 tempd=squeeze(m1d);
 m2d=(tempd)';
 mean_data=fliplr(m2d);
-s1d = std(oyo(i,:,:));
-s2d=squeeze(s1d);
-s3d=(s2d)';
-std_dev=fliplr(s3d);
-
-upper_bound = mean_data + 1 * std_dev;
-lower_bound = mean_data - 1 * std_dev;
-
-plot(1:300,ptheory(i,1:300), 'b-',1:300,mean_data(1:300) , 'r--')
-
-hold on
-fill([x, fliplr(x)], [upper_bound(1:300), fliplr(lower_bound(1:300))], 'g', 'EdgeColor', 'k');
-alpha(0.3); % Adjust transparency if needed
-hold on
-if (i==1)
-title('Free Sites')
-xlabel('Length in Basepairs')
-ylabel('Probability')
-else
-    %sprintf('%dth col of X vs %dth col of Y',k,k)
-    title(sprintf('Ligand%d',i))
-xlabel('Length in Basepairs')
-ylabel('Probability')
-legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma')
-end
-
-end 
 
 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%withsamplingmeaan%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure('units','normalized','outerposition',[0 0 1 1])
-%figure
-set(0,'DefaultLineLineWidth',2)
-for i=1:s+1
 
 subplot(s+1,1,i)
 
 ayo2=fliplr(squeeze(oyo(i,:,:)));
 ayo=ayo2(:,1:300);
-N = 10;% sub-sample to get std
+N = 50;% sub-sample to get std
 mn2 = arrayfun(@(x) mean(ayo(x:x+N-1,:)),1:N:nrun-N+1,'UniformOutput',false);
 
  yo1= mean(ayo);
  yo1std = std(cell2mat(mn2')); 
 
-
+upper_bound = yo1 + 1 * yo1std;
+lower_bound = yo1 - 1 * yo1std;
 
 %%
 %figure
 
-errorbar(yo1,yo1std,'LineWidth',1.5)
+%errorbar(yo1,yo1std,'LineWidth',1.5)
+%hold on
+
+%plot(1:300,ptheory(i,1:300)) 
+plot(1:300,ptheory(i,1:300), 'b-',1:300,mean_data(1:300) , 'r--')
 hold on
-%plot(flipud(ptheory(3,1:300))) 
-plot(1:300,ptheory(i,1:300)) 
-hold on
+
+fill([x, fliplr(x)], [upper_bound(1:300), fliplr(lower_bound(1:300))], 'g', 'EdgeColor', 'k');
+alpha(0.3); % Adjust transparency if needed
 if (i==1)
 title('Free Sites')
 xlabel('Length in Basepairs')
 ylabel('Probability')
-legend('Simulation','Theory')
+%legend('Simulation','Theory')
+legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma_{M}')
 else
     %sprintf('%dth col of X vs %dth col of Y',k,k)
     title(sprintf('Ligand%d',i))
 xlabel('Length in Basepairs')
 ylabel('Probability')
-legend('Simulation','Theory')
+%legend('Simulation','Theory')
+legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma_{M}')
 end
 
 
 end
+
+
+
+
+
+

@@ -1,3 +1,24 @@
+%%This is the GUI version of the algorithm to generate average binding
+%%probabilities of ligand from Nrun random simulation (sequence sampling) of ligands 
+%%the GUI asks for inputs from the user step by step which are following
+%%We here presents the inputs which are needed to reproduce the result (fig 3) as in the main text.
+%%You can change the input values as per your problem needs.
+
+
+%% Input fasta file : select Add theory sequence (fasta) directly
+%% fasta file: browse and select 'sequence.fasta' within the Files folder
+%% select the sequence.fasta within the bar and then select 'extract theory (sequence) from the list'
+%% to browse folders where you can save the results (say 'testfolder')
+%% Then comes the no of ligands bar : 3
+%% Then concentration input dialog comes with predefined values as mentioned in text (you can change it as per your need)
+%% Then ligand size box apperas (enter length of ligand 1/2/3): 4 , 4 and 4 (again for reproducing)
+%% Then chose the binding constant of ligand 1 : write here x.txt or a.txt (it detects that the input is not a number and then let 
+%% you browse to select the binding constant file.)
+%% Browse within Files folder and select 'binding_constant_rules.txt' for netropsin  )
+%% For binding constant of ligand 2: 26
+%% For binding constant of ligand 3: 10
+%% After that co-operativity matrix appears with predefined values (all are 1), one can change that too
+%% Then simulation starts and for 100 simulations (Nrun), it takes 58 sec approx and outputs the result as fig 5
 clear
 timestamp = datestr(clock(), 'yyyy-mm-dd_HH_MM_SS');
 
@@ -608,98 +629,185 @@ end
 
 
 
-
-
 % figure,plot(outputArray4)
 %%
 % 
 %  $PREFORMATTED
 %  TEXT$ 
 % 
-x=1:300;
-figure('units','normalized','outerposition',[0 0 1 1])
-%figure
-set(0,'DefaultLineLineWidth',2)
+
+% figure('units','normalized','outerposition',[0 0 1 1])
+% %figure
+% set(0,'DefaultLineLineWidth',2)
+% % 
+% % First subplot
+% for i=1:s+1
 % 
-% First subplot
-for i=1:s+1
-
-subplot(s+1,1,i)
-
-m1d = mean(oyo(i,:,:),2);
-tempd=squeeze(m1d);
-m2d=(tempd)';
-mean_data=fliplr(m2d);
-s1d = std(oyo(i,:,:));
-s2d=squeeze(s1d);
-s3d=(s2d)';
-std_dev=fliplr(s3d);
-
-upper_bound = mean_data + 1 * std_dev;
-lower_bound = mean_data - 1 * std_dev;
-
-plot(1:300,ptheory(i,1:300), 'b-',1:300,mean_data(1:300) , 'r--')
-
-hold on
-fill([x, fliplr(x)], [upper_bound(1:300), fliplr(lower_bound(1:300))], 'g', 'EdgeColor', 'k');
-alpha(0.3); % Adjust transparency if needed
-hold on
-if (i==1)
-title('Free Sites')
-xlabel('Length in Basepairs')
-ylabel('Probability')
-else
-    %sprintf('%dth col of X vs %dth col of Y',k,k)
-    title(sprintf('Ligand%d',i))
-xlabel('Length in Basepairs')
-ylabel('Probability')
-legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma')
-end
-
-end 
+% subplot(s+1,1,i)
+% 
+% m1d = mean(oyo(i,:,:),2);
+% tempd=squeeze(m1d);
+% m2d=(tempd)';
+% mean_data=fliplr(m2d);
+% s1d = std(oyo(i,:,:));
+% s2d=squeeze(s1d);
+% s3d=(s2d)';
+% std_dev=fliplr(s3d);
+% 
+% upper_bound = mean_data + 1 * std_dev;
+% lower_bound = mean_data - 1 * std_dev;
+% 
+% plot(1:300,ptheory(i,1:300), 'b-',1:300,mean_data(1:300) , 'r--')
+% 
+% hold on
+% fill([x, fliplr(x)], [upper_bound(1:300), fliplr(lower_bound(1:300))], 'g', 'EdgeColor', 'k');
+% alpha(0.3); % Adjust transparency if needed
+% hold on
+% if (i==1)
+% title('Free Sites')
+% xlabel('Length in Basepairs')
+% ylabel('Probability')
+% else
+%     %sprintf('%dth col of X vs %dth col of Y',k,k)
+%     title(sprintf('Ligand%d',i))
+% xlabel('Length in Basepairs')
+% ylabel('Probability')
+% legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma')
+% end
+% 
+% end 
 
 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%withsamplingmeaan%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+% figure('units','normalized','outerposition',[0 0 1 1])
+% %figure
+% set(0,'DefaultLineLineWidth',2)
+% for i=1:s+1
+% m1d = mean(oyo(i,:,:),2);
+% tempd=squeeze(m1d);
+% m2d=(tempd)';
+% mean_data=fliplr(m2d);
+% 
+% 
+% 
+% subplot(s+1,1,i)
+% 
+% ayo2=fliplr(squeeze(oyo(i,:,:)));
+% ayo=ayo2(:,1:300);
+% N = 10;% sub-sample to get std
+% mn2 = arrayfun(@(x) mean(ayo(x:x+N-1,:)),1:N:nrun-N+1,'UniformOutput',false);
+% 
+%  yo1= mean(ayo);
+%  yo1std = std(cell2mat(mn2')); 
+% 
+% %upper_bound = mean_data + 1 * std_dev;
+% %lower_bound = mean_data - 1 * std_dev;
+% 
+% %%
+% %figure
+% 
+% errorbar(yo1,yo1std,'LineWidth',1.5)
+% hold on
+% 
+% %plot(1:300,ptheory(i,1:300)) 
+% plot(1:300,ptheory(i,1:300), 'b-',1:300,mean_data(1:300) , 'r--')
+% 
+% hold on
+% if (i==1)
+% title('Free Sites')
+% xlabel('Length in Basepairs')
+% ylabel('Probability')
+% legend('Simulation','Theory')
+% else
+%     %sprintf('%dth col of X vs %dth col of Y',k,k)
+%     title(sprintf('Ligand%d',i))
+% xlabel('Length in Basepairs')
+% ylabel('Probability')
+% legend('Simulation','Theory')
+% end
+% 
+% 
+% end
+
+%%%%%%%%%%%%%%%%%%%%%%withsamplingmeaanbut green%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+x=1:300;
+
 figure('units','normalized','outerposition',[0 0 1 1])
 %figure
 set(0,'DefaultLineLineWidth',2)
 for i=1:s+1
+m1d = mean(oyo(i,:,:),2);
+tempd=squeeze(m1d);
+m2d=(tempd)';
+mean_data=fliplr(m2d);
+
+
 
 subplot(s+1,1,i)
 
 ayo2=fliplr(squeeze(oyo(i,:,:)));
 ayo=ayo2(:,1:300);
-N = 10;% sub-sample to get std
+N = 50;% sub-sample to get std
 mn2 = arrayfun(@(x) mean(ayo(x:x+N-1,:)),1:N:nrun-N+1,'UniformOutput',false);
 
  yo1= mean(ayo);
  yo1std = std(cell2mat(mn2')); 
 
-
+upper_bound = yo1 + 1 * yo1std;
+lower_bound = yo1 - 1 * yo1std;
 
 %%
 %figure
 
-errorbar(yo1,yo1std,'LineWidth',1.5)
+%errorbar(yo1,yo1std,'LineWidth',1.5)
+%hold on
+
+%plot(1:300,ptheory(i,1:300)) 
+plot(1:300,ptheory(i,1:300), 'b-',1:300,mean_data(1:300) , 'r--')
 hold on
-%plot(flipud(ptheory(3,1:300))) 
-plot(1:300,ptheory(i,1:300)) 
-hold on
+
+fill([x, fliplr(x)], [upper_bound(1:300), fliplr(lower_bound(1:300))], 'g', 'EdgeColor', 'k');
+alpha(0.3); % Adjust transparency if needed
 if (i==1)
 title('Free Sites')
 xlabel('Length in Basepairs')
 ylabel('Probability')
-legend('Simulation','Theory')
+%legend('Simulation','Theory')
+legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma_{M}')
 else
     %sprintf('%dth col of X vs %dth col of Y',k,k)
     title(sprintf('Ligand%d',i))
 xlabel('Length in Basepairs')
 ylabel('Probability')
-legend('Simulation','Theory')
+%legend('Simulation','Theory')
+legend('Theory', 'Simulation(mean)','Simulation(mean)\pm\sigma_{M}')
 end
 
 
 end
+
+
+
